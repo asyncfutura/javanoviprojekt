@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>src/hr/adinfo/client/ui/reports/ClientAppReportsInvoicesDialog.java</url>
+            <bookmark id="1">
+                <name/>
+                <line>1127</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group name="ADInfo">
+            <file>file:/C:/Users/Ismedin/Documents/invoicegenerationsystem/InvoiceGenerationSystemClient/src/hr/adinfo/client/services/LocalServerNotificationsService.java</file>
+            <file>file:/C:/Users/Ismedin/Documents/invoicegenerationsystem/InvoiceGenerationSystemClient/src/hr/adinfo/client/ui/cashregister/ClientAppCashRegisterTouchDialog.java</file>
+            <file>file:/C:/Users/Ismedin/Documents/invoicegenerationsystem/InvoiceGenerationSystemClient/src/hr/adinfo/client/print/PrintUtils.java</file>
+            <file>file:/C:/Users/Ismedin/Documents/invoicegenerationsystem/InvoiceGenerationSystemClient/src/hr/adinfo/client/services/ClientAppUpdater.java</file>
+            <file>file:/C:/Users/Ismedin/Documents/invoicegenerationsystem/InvoiceGenerationSystemClient/src/hr/adinfo/client/ClientAppLocalServerClient.java</file>
+            <file>file:/C:/Users/Ismedin/Documents/invoicegenerationsystem/InvoiceGenerationSystemClient/src/hr/adinfo/client/ui/cashregister/ClientAppCashRegisterStandardDialog.java</file>
+            <file>file:/C:/Users/Ismedin/Documents/invoicegenerationsystem/InvoiceGenerationSystemClient/src/hr/adinfo/client/ui/reports/ClientAppTotal.java</file>
+            <file>file:/C:/Users/Ismedin/Documents/invoicegenerationsystem/InvoiceGenerationSystemClient/src/hr/adinfo/client/ui/ClientAppMainWindow.java</file>
+            <file>file:/C:/Users/Ismedin/Documents/invoicegenerationsystem/InvoiceGenerationSystemClient/src/hr/adinfo/client/services/ClientAppConnectionCheckService.java</file>
+            <file>file:/C:/Users/Ismedin/Documents/invoicegenerationsystem/InvoiceGenerationSystemClient/src/hr/adinfo/client/ui/reports/ClientAppReportsTotalDialog.java</file>
+        </group>
+        <group>
+            <file>file:/C:/JAVAPROJEKT/invoice_march_2024/invoicegenerationsystem/InvoiceGenerationSystemClient/src/hr/adinfo/client/ui/cashregister/ClientAppCashRegisterTouchDialog.java</file>
+            <file>file:/C:/JAVAPROJEKT/invoice_march_2024/invoicegenerationsystem/InvoiceGenerationSystemClient/src/hr/adinfo/client/ui/reports/ClientAppTipInvoicesDialog.java</file>
+            <file>file:/C:/JAVAPROJEKT/invoice_march_2024/invoicegenerationsystem/InvoiceGenerationSystemClient/src/hr/adinfo/client/LocalServer.java</file>
+            <file>file:/C:/JAVAPROJEKT/invoice_march_2024/invoicegenerationsystem/InvoiceGenerationSystemClient/src/hr/adinfo/client/datastructures/Invoice.java</file>
+            <file>file:/C:/JAVAPROJEKT/invoice_march_2024/invoicegenerationsystem/InvoiceGenerationSystemClient/src/hr/adinfo/client/MasterLocalServer.java</file>
+            <file>file:/C:/JAVAPROJEKT/invoice_march_2024/invoicegenerationsystem/InvoiceGenerationSystemClient/src/hr/adinfo/client/ui/cashregister/ClientAppCashRegisterStandardDialog.java</file>
+            <file>file:/C:/JAVAPROJEKT/invoice_march_2024/invoicegenerationsystem/InvoiceGenerationSystemClient/src/hr/adinfo/client/ui/cashregister/ClientAppSelectPaymentMethodDialog.java</file>
+            <file>file:/C:/JAVAPROJEKT/invoice_march_2024/invoicegenerationsystem/InvoiceGenerationSystemClient/src/hr/adinfo/client/fiscalization/Fiscalization.java</file>
+        </group>
+    </open-files>
+</project-private>

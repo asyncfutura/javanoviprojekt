@@ -1,0 +1,15 @@
+Thu Apr 11 20:22:30 CEST 2024 : Apache Derby Network Server - 10.14.2.0 - (1828579) started and ready to accept connections on port 1527
+----------------------------------------------------------------
+Thu Apr 11 20:22:31 CEST 2024:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-018e-ce65-a07c-0000198f2fc0 
+on database directory C:\JAVAPROJEKT\invoice_march_2024\invoicegenerationsystem\InvoiceGenerationSystemClient\20-LovrekTest with class loader sun.misc.Launcher$AppClassLoader@6d6f6e28 
+Loaded from file:/C:/JAVAPROJEKT/invoice_march_2024/invoicegenerationsystem/Apache%20Derby/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_202-b08
+user.dir=C:\JAVAPROJEKT\invoice_march_2024\invoicegenerationsystem\InvoiceGenerationSystemClient
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
+Thu Apr 11 20:37:41 CEST 2024 : Host Accountable is not local to the server running on 0.0.0.0, so cannot be used for NetworkServerControl commands.  
