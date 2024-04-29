@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="InvoiceGenerationSystemControl">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/InvoiceGenerationSystemControl.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

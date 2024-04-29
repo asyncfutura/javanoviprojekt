@@ -1,0 +1,28 @@
+Thu Apr 11 20:19:58 CEST 2024 : Apache Derby Network Server - 10.14.2.0 - (1828579) started and ready to accept connections on port 9092
+----------------------------------------------------------------
+Thu Apr 11 20:19:59 CEST 2024:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-018e-ce63-4ef6-00001c199a08 
+on database directory C:\JAVAPROJEKT\invoice_march_2024\invoicegenerationsystem\InvoiceGenerationSystemServer\ServerAppDB with class loader sun.misc.Launcher$AppClassLoader@14ae5a5 
+Loaded from file:/C:/JAVAPROJEKT/invoice_march_2024/invoicegenerationsystem/Apache%20Derby/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_202-b08
+user.dir=C:\JAVAPROJEKT\invoice_march_2024\invoicegenerationsystem\InvoiceGenerationSystemServer
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Thu Apr 11 20:22:35 CEST 2024:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance 97e00100-018e-ce63-4ef6-00001c199a08 
+on database directory C:\JAVAPROJEKT\invoice_march_2024\invoicegenerationsystem\InvoiceGenerationSystemServer\backup\20-LovrekTest with class loader sun.misc.Launcher$AppClassLoader@14ae5a5 
+Loaded from file:/C:/JAVAPROJEKT/invoice_march_2024/invoicegenerationsystem/Apache%20Derby/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_202-b08
+user.dir=C:\JAVAPROJEKT\invoice_march_2024\invoicegenerationsystem\InvoiceGenerationSystemServer
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
+Thu Apr 11 20:39:51 CEST 2024 : Apache Derby Network Server - 10.14.2.0 - (1828579) shutdown

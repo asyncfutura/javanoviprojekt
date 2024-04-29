@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/lib/derbyrun.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/iText-4.2.0-com.itextpdf.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/javax.mail.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/swingx-all-1.6.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/InvoiceGenerationSystemUtils.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/derbynet.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/derby.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/derbyclient.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/itextpdf-5.4.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
