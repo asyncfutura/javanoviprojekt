@@ -219,6 +219,7 @@ public class ClientAppTipInvoicesDialog extends javax.swing.JDialog {
 		LoadClientsList();
 		RefreshTable();
 	}
+        
 	
 	private void LoadClientsList(){
 		final JDialog loadingDialog = new LoadingDialog(null, true);
@@ -295,24 +296,24 @@ public class ClientAppTipInvoicesDialog extends javax.swing.JDialog {
 		final JDialog loadingDialog = new LoadingDialog(null, true);
 		
 		String queryLocal = "SELECT LOCAL_INVOICES.ID, CR_NUM, I_NUM, I_DATE, I_TIME, S_ID, PAY_NAME, PAY_TYPE, C_ID, LOCAL_INVOICES.DIS_PCT, "
-				+ "LOCAL_INVOICES.DIS_AMT, FIN_PR, NOTE, STAFF.FIRST_NAME, STAFF.LAST_NAME, JIR, MIN(LOCAL_INVOICE_ITEMS.AMT), SPEC_NUM, PAY_TYPE_2 "
+				+ "LOCAL_INVOICES.DIS_AMT, FIN_PR, NOTE, STAFF.FIRST_NAME, STAFF.LAST_NAME, JIR, MIN(LOCAL_INVOICE_ITEMS.AMT), SPEC_NUM, PAY_TYPE_2, IZNOS_NAPOJNICE "
 				+ "FROM LOCAL_INVOICES "
 				+ "INNER JOIN STAFF ON STAFF.ID = LOCAL_INVOICES.S_ID "
 				+ "INNER JOIN LOCAL_INVOICE_ITEMS ON LOCAL_INVOICES.ID = LOCAL_INVOICE_ITEMS.IN_ID "
 				+ "WHERE O_NUM = ? AND LOCAL_INVOICES.IS_DELETED = 0 "
 				+ "AND I_DATE >= ? AND I_DATE <= ? AND PAY_TYPE IN (" + payTypesString + ") "
 				+ "GROUP BY LOCAL_INVOICES.ID, CR_NUM, I_NUM, SPEC_NUM, I_DATE, I_TIME, S_ID, PAY_NAME, PAY_TYPE, C_ID, LOCAL_INVOICES.DIS_PCT, "
-				+ "LOCAL_INVOICES.DIS_AMT, FIN_PR, NOTE, STAFF.FIRST_NAME, STAFF.LAST_NAME, JIR, PAY_TYPE_2 "
+				+ "LOCAL_INVOICES.DIS_AMT, FIN_PR, NOTE, STAFF.FIRST_NAME, STAFF.LAST_NAME, JIR, PAY_TYPE_2, IZNOS_NAPOJNICE "
 				+ "ORDER BY CR_NUM, I_NUM, PAY_TYPE";
 		String query = "SELECT INVOICES.ID, CR_NUM, I_NUM, I_DATE, I_TIME, S_ID, PAY_NAME, PAY_TYPE, C_ID, INVOICES.DIS_PCT, "
-				+ "INVOICES.DIS_AMT, FIN_PR, NOTE, STAFF.FIRST_NAME, STAFF.LAST_NAME, JIR, MIN(INVOICE_ITEMS.AMT), SPEC_NUM, PAY_TYPE_2 "
+				+ "INVOICES.DIS_AMT, FIN_PR, NOTE, STAFF.FIRST_NAME, STAFF.LAST_NAME, JIR, MIN(INVOICE_ITEMS.AMT), SPEC_NUM, PAY_TYPE_2, IZNOS_NAPOJNICE "
 				+ "FROM INVOICES "
 				+ "INNER JOIN STAFF ON STAFF.ID = INVOICES.S_ID "
 				+ "INNER JOIN INVOICE_ITEMS ON INVOICES.ID = INVOICE_ITEMS.IN_ID "
 				+ "WHERE O_NUM = ? "
 				+ "AND I_DATE >= ? AND I_DATE <= ? AND PAY_TYPE IN (" + payTypesString + ") "
 				+ "GROUP BY INVOICES.ID, CR_NUM, I_NUM, SPEC_NUM, I_DATE, I_TIME, S_ID, PAY_NAME, PAY_TYPE, C_ID, INVOICES.DIS_PCT, "
-				+ "INVOICES.DIS_AMT, FIN_PR, NOTE, STAFF.FIRST_NAME, STAFF.LAST_NAME, JIR, PAY_TYPE_2 "
+				+ "INVOICES.DIS_AMT, FIN_PR, NOTE, STAFF.FIRST_NAME, STAFF.LAST_NAME, JIR, PAY_TYPE_2, IZNOS_NAPOJNICE "
 				+ "ORDER BY CR_NUM, I_NUM, PAY_TYPE";
                 
 		boolean isProduction = ClientAppSettings.GetBoolean(Values.AppSettingsEnum.SETTINGS_ADMIN_ENVIRONMENT_PRODUCTION.ordinal());
@@ -344,7 +345,7 @@ public class ClientAppTipInvoicesDialog extends javax.swing.JDialog {
 				}
 				if(databaseQueryResult != null){
 					CustomTableModel customTableModel = new CustomTableModel();
-					customTableModel.setColumnIdentifiers(new String[] {"Datum", "Kasa", "Br. rač.", "Djelatnik", "Nač. plać.", "Tip rač.", "Ukupno"});
+					customTableModel.setColumnIdentifiers(new String[] {"Datum", "Kasa", "Br. rač.", "Djelatnik", "Nač. plać.", "Tip rač.", "Ukupno", "Napojnica"});
 					
 					ArrayList<Integer> idListInvoices = new ArrayList<>();
 					ArrayList<Integer> invoicesNumList = new ArrayList<>();
@@ -382,6 +383,7 @@ public class ClientAppTipInvoicesDialog extends javax.swing.JDialog {
 						rowData[5] = databaseQueryResult[0].getInt(8) == -1 ? "Običan" : ("R1 - " + GetClientName(databaseQueryResult[0].getInt(8)));
 						float totalPrice = databaseQueryResult[0].getFloat(11) * (100f - databaseQueryResult[0].getFloat(9)) / 100f - databaseQueryResult[0].getFloat(10);
 						rowData[6] = "** " + ClientAppUtils.FloatToPriceString(totalPrice) + " **";
+                                                rowData[7] = databaseQueryResult[0].getString(19);
 						customTableModel.addRow(rowData);
 						
 						idListInvoices.add(-1);
@@ -427,6 +429,7 @@ public class ClientAppTipInvoicesDialog extends javax.swing.JDialog {
 						rowData[5] = databaseQueryResult[1].getInt(8) == -1 ? "Običan" : ("R1 - " + GetClientName(databaseQueryResult[1].getInt(8)));
 						float totalPrice = databaseQueryResult[1].getFloat(11) * (100f - databaseQueryResult[1].getFloat(9)) / 100f - databaseQueryResult[1].getFloat(10);
 						rowData[6] = ClientAppUtils.FloatToPriceString(totalPrice);
+                                                rowData[7] = databaseQueryResult[1].getString(19);
 						customTableModel.addRow(rowData);
 						idListInvoices.add(databaseQueryResult[1].getInt(0));
 						discountPercentageListInvoices.add(databaseQueryResult[1].getFloat(9));
@@ -1053,7 +1056,7 @@ public class ClientAppTipInvoicesDialog extends javax.swing.JDialog {
     private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
                 String iznosNapojnice = jTextFieldIznosNapojnice.getText();
                 final JDialog loadingDialog = new LoadingDialog(null, true);
-                String tipPlacanja = "";
+                String tipPlacanja = ""; Double doubleIznosNapojnice;
                 boolean isProduction = ClientAppSettings.GetBoolean(Values.AppSettingsEnum.SETTINGS_ADMIN_ENVIRONMENT_PRODUCTION.ordinal());
                 int startOfficeNumber = Licence.GetOfficeNumber();
                 String startOfficeTag = Licence.GetOfficeTag();
@@ -1061,56 +1064,79 @@ public class ClientAppTipInvoicesDialog extends javax.swing.JDialog {
                 String startCompanyOib = Licence.GetOIB();
                 boolean isInVatSystem = Utils.GetIsInVATSystem(ClientAppLocalServerClient.GetInstance(), ClientAppLogger.GetInstance());
 
-                if (jRadioButtonGotovina.isSelected()){
-                    tipPlacanja = "G";
-                }
-                else if (jRadioButtonKartice.isSelected()){
-                    tipPlacanja = "K";
-                }
+                try {
+                    iznosNapojnice = iznosNapojnice.replace(',','.');
+                    
+                    doubleIznosNapojnice = Double.parseDouble(iznosNapojnice);
+                    
+                    if (jRadioButtonGotovina.isSelected()){
+                        tipPlacanja = "G";
+                    }
+                    else if (jRadioButtonKartice.isSelected()){
+                        tipPlacanja = "K";
+                    }
+                    else {
+                         ClientAppLogger.GetInstance().ShowMessage("Molimo odaberite način plaćanja.");
+                    }
+                    
+                    if (doubleIznosNapojnice <= 0 || doubleIznosNapojnice > 1000){
+                       ClientAppLogger.GetInstance().ShowMessage("Molimo odaberite napojnicu u rasponu od 0 do 1000 eura.");
+                       return;
+                    }
+                    
+                    if (jTableInvoices.getSelectedRow() == -1){
+                        ClientAppLogger.GetInstance().ShowMessage("Molimo odaberite račun kako biste mogli spremiti napojnicu.");
+                        return;
+                    }
 
-                if (Integer.parseInt(iznosNapojnice) > 0 && tipPlacanja.length() > 0){
-                    this.iznosNapojnice = iznosNapojnice;
-                    this.tipPlacanja = tipPlacanja;
+                    if (doubleIznosNapojnice > 0 && tipPlacanja.length() > 0){
+                        this.iznosNapojnice = doubleIznosNapojnice.toString();
+                        this.tipPlacanja = tipPlacanja;
+                    }
+
+                    Invoice myInvoice = GetInvoice(invoiceId, isLocal);
+                    myInvoice.iznosNapojnice = doubleIznosNapojnice.toString();
+                    myInvoice.tipNapojnice = tipPlacanja;
+                    myInvoice.isTest = !isProduction;
+                    myInvoice.isInVatSystem = isInVatSystem;
+
+                    FiscalizeInvoiceNapojnice(myInvoice, true);
+
+                    String updateInvoiceNapojnice = "UPDATE USER1.INVOICES SET IZNOS_NAPOJNICE = ?, TIP_PLACANJA = ?, ZKI_NAPOJNICE = ?  WHERE ID = ?";
+
+                    if(!isProduction){
+                            updateInvoiceNapojnice = updateInvoiceNapojnice.replace("INVOICES", "INVOICES_TEST").replace("INVOICE_ITEMS", "INVOICE_ITEMS_TEST");
+                            isLocal = true;
+                    }
+
+                    String finalIznosNapojnice = doubleIznosNapojnice.toString();
+                    DatabaseQuery databaseQuery = new DatabaseQuery(updateInvoiceNapojnice);
+                    databaseQuery.AddParam(1, finalIznosNapojnice);
+                    databaseQuery.AddParam(2, tipPlacanja);
+                    databaseQuery.AddParam(3, myInvoice.zki);
+                    databaseQuery.AddParam(4, invoiceId);
+                    ServerQueryTask databaseQueryTask = new ServerQueryTask(loadingDialog, databaseQuery, ClientAppLocalServerClient.GetInstance(), ClientAppLogger.GetInstance());
+
+                    databaseQueryTask.execute();
+                            try {
+                                    ServerResponse serverResponse = databaseQueryTask.get();
+                                    DatabaseQueryResult databaseQueryResult = null;
+                                    if (serverResponse != null && serverResponse.errorCode == Values.RESPONSE_ERROR_CODE_SUCCESS) {
+                                            databaseQueryResult = ((DatabaseQueryResponse) serverResponse).databaseQueryResult;
+                                    }
+
+                                    if (databaseQueryResult != null) {
+                                               ClientAppLogger.GetInstance().ShowMessage("Uspješno spremljena napojnica.");
+                                    }
+                            } catch (Exception ex) {
+                                    ClientAppLogger.GetInstance().ShowErrorLog(ex);
+                            }   
                 }
-        
-                Invoice myInvoice = GetInvoice(invoiceId, isLocal);
-                myInvoice.iznosNapojnice = iznosNapojnice;
-                myInvoice.tipNapojnice = tipPlacanja;
-		myInvoice.isTest = !isProduction;
-		myInvoice.isInVatSystem = isInVatSystem;
-               
-                
-		FiscalizeInvoiceNapojnice(myInvoice, true);
-               
-                
-                String updateInvoiceNapojnice = "UPDATE USER1.INVOICES SET IZNOS_NAPOJNICE = ?, TIP_PLACANJA = ?, NAP_ZKI = ?  WHERE ID = ?";
-                
-		if(!isProduction){
-                        updateInvoiceNapojnice = updateInvoiceNapojnice.replace("INVOICES", "INVOICES_TEST").replace("INVOICE_ITEMS", "INVOICE_ITEMS_TEST");
-                        isLocal = true;
-		}
-                                
-                DatabaseQuery databaseQuery = new DatabaseQuery(updateInvoiceNapojnice);
-                databaseQuery.AddParam(1, iznosNapojnice);
-		databaseQuery.AddParam(2, tipPlacanja);
-                databaseQuery.AddParam(3, myInvoice.ZKINapojnice);
-                databaseQuery.AddParam(4, invoiceId);
-		ServerQueryTask databaseQueryTask = new ServerQueryTask(loadingDialog, databaseQuery, ClientAppLocalServerClient.GetInstance(), ClientAppLogger.GetInstance());
-
-		databaseQueryTask.execute();
-			try {
-				ServerResponse serverResponse = databaseQueryTask.get();
-				DatabaseQueryResult databaseQueryResult = null;
-				if (serverResponse != null && serverResponse.errorCode == Values.RESPONSE_ERROR_CODE_SUCCESS) {
-					databaseQueryResult = ((DatabaseQueryResponse) serverResponse).databaseQueryResult;
-				}
-
-                                if (databaseQueryResult != null) {
-                                           ClientAppLogger.GetInstance().ShowMessage("Uspješno spremljena napojnica.");
-				}
-			} catch (Exception ex) {
-				ClientAppLogger.GetInstance().ShowErrorLog(ex);
-			}   
+                catch (Exception ex){
+                    ClientAppLogger.GetInstance().LogMessage(ex.getMessage());
+                    ClientAppLogger.GetInstance().ShowMessage("Došlo je do pogreške prilikom unosa napojnice. Pokušajte ponovno.");
+                    Utils.DisposeDialog(this);
+                }
                         
                 Utils.DisposeDialog(this);
     }//GEN-LAST:event_jButtonSaveActionPerformed
@@ -1123,6 +1149,8 @@ public class ClientAppTipInvoicesDialog extends javax.swing.JDialog {
 		sorter.setRowFilter(RowFilter.andFilter(filters));
         jTableInvoices.setRowSorter(sorter);
 	}
+        
+
         
         
 	
