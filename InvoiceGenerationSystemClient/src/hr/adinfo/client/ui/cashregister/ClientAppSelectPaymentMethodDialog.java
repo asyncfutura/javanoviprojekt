@@ -199,6 +199,7 @@ public class ClientAppSelectPaymentMethodDialog extends javax.swing.JDialog {
         jLabelTotal = new javax.swing.JLabel();
         jButtonReturnReceiptCardInvoice = new javax.swing.JButton();
         jButtonProvjeri = new javax.swing.JButton();
+        jLabelNacinPlacanja = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Način plaćanja");
@@ -344,6 +345,8 @@ public class ClientAppSelectPaymentMethodDialog extends javax.swing.JDialog {
             }
         });
 
+        jLabelNacinPlacanja.setText("jLabelNacinPlacanja");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -352,14 +355,18 @@ public class ClientAppSelectPaymentMethodDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelTotal))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelDate)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabelDate)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelTotal)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(41, 41, 41)
+                .addComponent(jLabelNacinPlacanja)
+                .addGap(32, 32, 32)
                 .addComponent(jButtonProvjeri)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButtonReturnReceiptCardInvoice)
@@ -375,7 +382,8 @@ public class ClientAppSelectPaymentMethodDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jLabelTotal))
+                    .addComponent(jLabelTotal)
+                    .addComponent(jLabelNacinPlacanja))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -475,10 +483,24 @@ if(jTable1.getSelectedRow() == -1){
     private void jButtonReturnReceiptCardInvoiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReturnReceiptCardInvoiceActionPerformed
                 String[] invoiceNumberString = jBrojRacunaTextField.getText().split("/");
 		
-		int invoiceNumber = 0;
-		String officeTag = "";
-		int cashRegisterNumber = 0;
-		try {
+                 int invoiceNumber = 0;
+                    String officeTag = "";
+                    int cashRegisterNumber = 0;
+                    try {
+                            invoiceNumber = Integer.parseInt(invoiceNumberString[0]);
+                            officeTag = invoiceNumberString[1];
+                            if(invoiceNumberString.length == 3){
+                                    cashRegisterNumber = Integer.parseInt(invoiceNumberString[2]);
+                            }
+                    } catch (NumberFormatException ex){
+                            ClientAppLogger.GetInstance().ShowMessage("Broj računa nije ispravnog oblika.");
+                            return;
+                    }
+                
+		//int invoiceNumber = 0;
+		//String officeTag = "";
+		//int cashRegisterNumber = 0;
+		/*try {
 			invoiceNumber = Integer.parseInt(invoiceNumberString[0]);
 			officeTag = invoiceNumberString[1];
 			if(invoiceNumberString.length == 3){
@@ -493,7 +515,7 @@ if(jTable1.getSelectedRow() == -1){
 		} catch (NumberFormatException ex){
 			ClientAppLogger.GetInstance().ShowMessage("Broj računa nije ispravnog oblika.");
 			return;
-		}
+		}*/
 		
 		if(!officeTag.equals(Licence.GetOfficeTag())){
 			ClientAppLogger.GetInstance().ShowMessage("Račun nije moguće stornirati jer nije izdan u ovoj poslovnici.");
@@ -523,8 +545,11 @@ if(jTable1.getSelectedRow() == -1){
 			return;
 		}
                 
+                String selectedInvoiceNacinPlacanja = selectedInvoice.paymentMethodName;
+                
                 jLabelDate.setText(new SimpleDateFormat("dd.MM.yyyy. HH:mm:ss").format(selectedInvoice.date));
 		jLabelTotal.setText(ClientAppUtils.FloatToPriceString(selectedInvoice.totalPrice * (100f - selectedInvoice.discountPercentage) / 100f - selectedInvoice.discountValue));
+                jLabelNacinPlacanja.setText(selectedInvoiceNacinPlacanja);
                 
                 jButtonSelectActionPerformed(evt);
     }//GEN-LAST:event_jButtonReturnReceiptCardInvoiceActionPerformed
@@ -601,6 +626,7 @@ if(jTable1.getSelectedRow() == -1){
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabelDate;
+    private javax.swing.JLabel jLabelNacinPlacanja;
     private javax.swing.JLabel jLabelTotal;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;

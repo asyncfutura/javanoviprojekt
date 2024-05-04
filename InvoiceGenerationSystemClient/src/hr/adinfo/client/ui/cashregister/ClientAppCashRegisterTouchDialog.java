@@ -189,7 +189,7 @@ public class ClientAppCashRegisterTouchDialog extends javax.swing.JDialog {
 			}
 		});
 		lastInputTime = System.currentTimeMillis() / 1000;
-		
+		 
 		startOfficeNumber = Licence.GetOfficeNumber();
 		startOfficeTag = Licence.GetOfficeTag();
 		startCashRegisterNumber = Licence.GetCashRegisterNumber();
@@ -3184,14 +3184,14 @@ public class ClientAppCashRegisterTouchDialog extends javax.swing.JDialog {
                 + System.lineSeparator()+ System.lineSeparator() + "U slučaju ponavljanja pogreške, molimo pokušajte ponovno pokrenuti aplikaciju.");
             return;
         }
-
-        if (lastInvoice != null){
-            newInvoice = new Invoice(lastInvoice);
+        
+        if (dialog.selectedInvoice != null){
+              newInvoice = new Invoice(dialog.selectedInvoice); 
         }
         else {
-            newInvoice = new Invoice(dialog.selectedInvoice);
+              newInvoice = new Invoice(lastInvoice);
         }
-
+        
         UpdateCurrentInvoiceData(newInvoice);
         newInvoice.paymentMethodName = dialog.selectedPaymentMethodName;
         newInvoice.paymentMethodType = dialog.selectedPaymentMethodType;
