@@ -106,12 +106,12 @@ public class Fiscalization {
 			String myNamespace = "tns";
 			String myNamespaceURI = "http://www.apis-it.hr/fin/2012/types/f73";
                         String tipPlacanja = "";
-                        Integer iznosNapojnice = 0;
+                        Double iznosNapojnice = 0.0;
                         
                         if (invoice.iznosNapojnice == null){
                             invoice.iznosNapojnice = "";
                         } else {
-                            iznosNapojnice = Integer.parseInt(invoice.iznosNapojnice);
+                            iznosNapojnice = Double.parseDouble(invoice.iznosNapojnice);
                         } 
 			
 			SOAPMessage soapMessage = MessageFactory.newInstance().createMessage();
@@ -132,25 +132,33 @@ public class Fiscalization {
 			
 			// Invoice data 1
 			SOAPElement invoiceElem = rootElem.addChildElement("Racun", myNamespace);
-			invoiceElem.addChildElement("Oib", myNamespace).addTextNode(GetFiscOib(invoice.isTest));
+			invoiceElem.addChildElement("Oib", myNamespace).addTextNode(GetFiscOib(!invoice.isTest));
 			invoiceElem.addChildElement("USustPdv", myNamespace).addTextNode(invoice.isInVatSystem ? "true" : "false");
 			invoiceElem.addChildElement("DatVrijeme", myNamespace).addTextNode(new SimpleDateFormat("dd.MM.yyyy").format(invoice.date) + "T" + new SimpleDateFormat("HH:mm:ss").format(invoice.date));
-			invoiceElem.addChildElement("OznSlijed", myNamespace).addTextNode("P");
+			invoiceElem.addChildElement("OznSlijed", myNamespace).addTextNode("N");
 			SOAPElement invoiceNumberElem = invoiceElem.addChildElement("BrRac", myNamespace);
 			invoiceNumberElem.addChildElement("BrOznRac", myNamespace).addTextNode("" + invoice.invoiceNumber);
 			invoiceNumberElem.addChildElement("OznPosPr", myNamespace).addTextNode("" + invoice.officeTag);
 			invoiceNumberElem.addChildElement("OznNapUr", myNamespace).addTextNode("" + invoice.cashRegisterNumber);
                         InvoiceTaxes invoiceTaxes = ClientAppUtils.CalculateTaxes(invoice);
 			SOAPElement taxesElem = invoiceElem.addChildElement("Pdv", myNamespace);
+                        SOAPElement consTaxesElem = null;
+
 			for (int i = 0; i < invoiceTaxes.taxRates.size(); ++i){
 				if(invoiceTaxes.isConsumpionTax.get(i))  
 					continue;
+                                
+                                //if(consTaxesElem == null){
+				//	consTaxesElem = invoiceElem.addChildElement("Pnp", myNamespace);
+				//}
 				
 				SOAPElement taxElem = taxesElem.addChildElement("Porez", myNamespace);
 				taxElem.addChildElement("Stopa", myNamespace).addTextNode(ClientAppUtils.DoubleToPriceString(invoiceTaxes.taxRates.get(i)));
 				taxElem.addChildElement("Osnovica", myNamespace).addTextNode(ClientAppUtils.DoubleToPriceString(invoiceTaxes.taxBases.get(i)));
 				taxElem.addChildElement("Iznos", myNamespace).addTextNode(ClientAppUtils.DoubleToPriceString(invoiceTaxes.taxAmounts.get(i)));
 			}
+                        
+                        
                         float totalPrice = ClientAppUtils.FloatToPriceFloat(invoice.totalPrice * (100f - invoice.discountPercentage) / 100f - invoice.discountValue);
 			invoiceElem.addChildElement("IznosUkupno", myNamespace).addTextNode(ClientAppUtils.FloatToPriceString(totalPrice));
 			invoiceElem.addChildElement("NacinPlac", myNamespace).addTextNode(GetPaymentMethodCode(invoice));
@@ -171,7 +179,7 @@ public class Fiscalization {
 			soapMessage.saveChanges();
 			
 			// Sign the message
-			SignMessage(rootElem, "#NapojnicaZahtjev", invoice.isTest);
+			SignMessage(rootElem, "#NapojnicaZahtjev", !invoice.isTest);
 			soapMessage.saveChanges();
 			
 			/*System.out.println("Request SOAP Message:");
@@ -181,7 +189,6 @@ public class Fiscalization {
 			ClientAppLogger.GetInstance().LogFiscalizationXMLSent(soapMessage, "R-" + invoice.invoiceNumber + "-"+ invoice.officeTag + "-" + invoice.cashRegisterNumber);
 			
 			SOAPConnection soapConnection = SOAPConnectionFactory.newInstance().createConnection();
-                        SOAPMessage soapResponse = soapConnection.call(soapMessage, FISK_URL_TEST);
 			
 			final int timeout;
 			if (isNow){
@@ -200,6 +207,9 @@ public class Fiscalization {
 					return connection;
 				}
 			});
+                        
+                        SOAPMessage soapResponse = soapConnection.call(soapMessage, endpoint);
+
 			
 			//System.out.println("Response SOAP Message:");
 			//soapResponse.writeTo(System.out);
